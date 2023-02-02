@@ -54,44 +54,43 @@ public class IntervalSequenceGenerator {
 			HashMap<Integer, Integer> evtTime = new HashMap<>();
 			if (i % 1000 == 0) System.out.println("complete generate " + k++ + "k sequences");
 
-			//开始结束时间
+			//start and finish time
 			int starttime = 0;
 			int endtime = 0;
 			int gap = 13;
 //			while (gap < 0 || gap > 30) {
 //				gap = random.nextInt();
 //			}
-			//上一个interval event
+			//last interval event
 //			int lastEvent = 0;
-			//上一个event 的开始时间
+			//last event's start time
 			int laststarttime = 1;
 
-			//序列interval数量。方差9，均值为meanIntervalCountBySequence
+			//interval's number。variance 9，mean = meanIntervalCountBySequence
 			double intervalNum1 = Math.abs(Math.sqrt(9) * random.nextGaussian() + meanIntervalCountBySequence);
 			int intervalNum = new Double(intervalNum1).intValue();
 
 			// for the number of intervals to be generated
 			for (int j = 0; j < intervalNum; j++) {
-				/**开始时间**/
-				//间隔:(0,...,6)-3
+				/**start time**/
 				starttime = random.nextInt();
 				while(starttime < laststarttime || starttime > endtime + gap) {
 					starttime = random.nextInt(10000) + 1;
 					System.out.println("seq: " + i + " old start time: " + laststarttime + " new start time: " + starttime);
 				}
-				if(laststarttime > starttime) starttime = laststarttime + 1; //避免后产生的event的开始时间更加小
+				if(laststarttime > starttime) starttime = laststarttime + 1; //to avoid get a smaller start time of the generated event
 				laststarttime = starttime;
 
-				/**结束时间**/
-				//持续时间。正态分布：方差4，均值4,8,12
+				/**finish time**/
+				//duration. nomal distribution：variance，mean
 				double mean = (random.nextInt(3) + 1) * 100;
 				double durationDouble = Math.abs(Math.sqrt(1000) * random.nextGaussian() + mean);
 				int duration = new Double(durationDouble).intValue();
 				if(duration == 0) duration++;
 				endtime = starttime + duration;
 
-				/**效用**/
-				//效用，对数正态。方差2，均值2	duration
+				/**utility**/
+				//utility，log nomal	duration
 				double utilityNormal = Math.sqrt(8) * random.nextGaussian() + Math.exp(Math.abs((1.0 / (Math.sqrt(2 *
 						Math.PI * 8))) * Math.exp(-((duration - 8) * (duration - 8)) / (16.))));
 				double utilityLogNormal = Math.exp(utilityNormal);
@@ -100,7 +99,7 @@ public class IntervalSequenceGenerator {
 
 				/**event**/
 				int event = random.nextInt(maxDistinctItems) + 1;
-				while(evtTime.get(event) != null && evtTime.get(event) >= endtime){ //当生成与上一个event相同的event时，重新生成
+				while(evtTime.get(event) != null && evtTime.get(event) >= endtime){ 
 					event = random.nextInt(maxDistinctItems);
 				}
 
