@@ -6,14 +6,14 @@ import java.net.URL;
 
 /**
  * @Copyright (C), HITSZ
- * @Author Maohua Lv
+ * @Author 
  * @Date Created in 15:34 2022/11/8.
  * @Version 1.0
  * @Description
  */
 public class Main {
     public static void main(String[] args) throws IOException {
-        int sequenceCount = 40000;
+        int sequenceCount = 10000;
 
         int maxDistinctItems = 100;
 
